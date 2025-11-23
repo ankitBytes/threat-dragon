@@ -17,18 +17,20 @@ const getEditGraph = (container, ctor = Graph) => {
         autoResize: true,
         grid: {
             size: 10, // default value
-            visible: true,
+            visible: true
         },
         mousewheel: {
-            enabled: false,
+            enabled: true,
+            global: true,
+            modifiers: ['ctrl', 'meta']
         },
         panning: {
-            enabled: false, // use Scroller plugin instead
+            enabled: false // use Scroller plugin instead
         },
         scaling: {
             // mousewheel + ctrl/meta/command key zooms in and out
             min: 0.1, // default value is 0.01
-            max: 3.2, // default value is 16
+            max: 3.2 // default value is 16
         },
         preventDefaultContextMenu: false,
         connecting: {
@@ -40,76 +42,46 @@ const getEditGraph = (container, ctor = Graph) => {
             connector: {
                 name: 'rounded',
                 args: {
-                    radius: 8,
-                },
+                    radius: 8
+                }
             },
             anchor: 'center',
             connectionPoint: 'boundary',
             snap: {
-                radius: 50,
+                radius: 50
             },
             createEdge() {
                 return new Shape.Edge({
                     attrs: {
-                        line: {
-                            // probably need stroke to be black for federal reports
+                        line: { // probably need stroke to be black for federal reports
                             strokeWidth: 2,
                             targetMarker: {
                                 name: 'block',
                                 width: 12,
-                                height: 8,
-                            },
-                        },
+                                height: 8
+                            }
+                        }
                     },
-                    zIndex: 0,
+                    zIndex: 0
                 });
             },
             validateConnection({ targetMagnet }) {
                 return !!targetMagnet;
-            },
-        },
+            }
+        }
     });
-    // --- Universal Pinch Zoom Handler ---
-    let lastScale = 1;
-
-    container.addEventListener(
-        'wheel',
-        (e) => {
-            // Detect pinch gesture (touchpad pinch always has ctrlKey=true or huge deltaY)
-            const isPinch = e.ctrlKey || Math.abs(e.deltaY) > 50; // Windows/Linux trackpads
-
-            if (!isPinch) return; // Normal scrolling, ignore
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            // Normalize zoom speed
-            const zoomSensitivity = 0.02;
-            const scaleFactor =
-                e.deltaY < 0 ? 1 + zoomSensitivity : 1 - zoomSensitivity;
-
-            lastScale *= scaleFactor;
-
-            // Limit zoom
-            lastScale = Math.min(Math.max(lastScale, 0.5), 3);
-
-            graph.scale(lastScale);
-        },
-        { passive: false }
-    );
-
     graph
         .use(new Clipboard())
         .use(
             new History({
                 enabled: true,
-                beforeAddCommand: beforeAddCommand,
+                beforeAddCommand: beforeAddCommand
             })
         )
         .use(
             new Keyboard({
                 enabled: true,
-                global: true,
+                global: true
             })
         )
         .use(
@@ -118,7 +90,7 @@ const getEditGraph = (container, ctor = Graph) => {
                 modifiers: ['shift'],
                 pageVisible: true,
                 pageBreak: false,
-                pannable: true,
+                pannable:  true
             })
         )
         .use(
@@ -135,13 +107,13 @@ const getEditGraph = (container, ctor = Graph) => {
                 rubberEdge: true, // not documented in v2.x docs but needed for rubberbanding TB curves
                 strict: true, // need strict select otherwise data flows select other elements
                 showNodeSelectionBox: true,
-                showEdgeSelectionBox: true,
+                showEdgeSelectionBox: true
             })
         )
         .use(
             new Snapline({
                 enabled: true,
-                sharp: true,
+                sharp: true
             })
         )
         .use(
@@ -156,9 +128,9 @@ const getEditGraph = (container, ctor = Graph) => {
                     maxHeight: Number.MAX_SAFE_INTEGER, // same goes for this
                     orthogonal: true,
                     preserveAspectRatio: false,
-                    restrict: false,
+                    restrict: false
                 },
-                rotating: true,
+                rotating: true
             })
         )
         .use(new Export());
@@ -174,11 +146,11 @@ const getReadonlyGraph = (container, ctor = Graph) => {
         container: container,
         autoResize: true,
         preventDefaultContextMenu: false,
-        interacting: false,
+        interacting: false
     });
     graph.use(
         new History({
-            enabled: false,
+            enabled: false
         })
     );
 
@@ -194,5 +166,5 @@ export const beforeAddCommand = (_event, args) => {
 
 export default {
     getEditGraph,
-    getReadonlyGraph,
+    getReadonlyGraph
 };
