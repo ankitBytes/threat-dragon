@@ -1,15 +1,15 @@
-import { Graph } from "@antv/x6";
-import { Clipboard } from "@antv/x6-plugin-clipboard";
-import { Export } from "@antv/x6-plugin-export";
-import { History } from "@antv/x6-plugin-history";
-import { Keyboard } from "@antv/x6-plugin-keyboard";
-import { Scroller } from "@antv/x6-plugin-scroller";
-import { Shape } from "@antv/x6";
-import { Selection } from "@antv/x6-plugin-selection";
-import { Snapline } from "@antv/x6-plugin-snapline";
-import { Transform } from "@antv/x6-plugin-transform";
-import events from "./events.js";
-import keys from "./keys.js";
+import { Graph } from '@antv/x6';
+import { Clipboard } from '@antv/x6-plugin-clipboard';
+import { Export } from '@antv/x6-plugin-export';
+import { History } from '@antv/x6-plugin-history';
+import { Keyboard } from '@antv/x6-plugin-keyboard';
+import { Scroller } from '@antv/x6-plugin-scroller';
+import { Shape } from '@antv/x6';
+import { Selection } from '@antv/x6-plugin-selection';
+import { Snapline } from '@antv/x6-plugin-snapline';
+import { Transform } from '@antv/x6-plugin-transform';
+import events from './events.js';
+import keys from './keys.js';
 
 const getEditGraph = (container, ctor = Graph) => {
     const graph = new ctor({
@@ -38,13 +38,13 @@ const getEditGraph = (container, ctor = Graph) => {
             allowNode: true, // default to attaching edges to nodes
             // allowPort: false, // attach edge anywhere on boundary, not just ports
             connector: {
-                name: "rounded",
+                name: 'rounded',
                 args: {
                     radius: 8,
                 },
             },
-            anchor: "center",
-            connectionPoint: "boundary",
+            anchor: 'center',
+            connectionPoint: 'boundary',
             snap: {
                 radius: 50,
             },
@@ -55,7 +55,7 @@ const getEditGraph = (container, ctor = Graph) => {
                             // probably need stroke to be black for federal reports
                             strokeWidth: 2,
                             targetMarker: {
-                                name: "block",
+                                name: 'block',
                                 width: 12,
                                 height: 8,
                             },
@@ -73,7 +73,7 @@ const getEditGraph = (container, ctor = Graph) => {
     let lastScale = 1;
 
     container.addEventListener(
-        "wheel",
+        'wheel',
         (e) => {
             // Detect pinch gesture (touchpad pinch always has ctrlKey=true or huge deltaY)
             const isPinch = e.ctrlKey || Math.abs(e.deltaY) > 50; // Windows/Linux trackpads
@@ -115,7 +115,7 @@ const getEditGraph = (container, ctor = Graph) => {
         .use(
             new Scroller({
                 enabled: true,
-                modifiers: ["shift"],
+                modifiers: ['shift'],
                 pageVisible: true,
                 pageBreak: false,
                 pannable: true,
@@ -125,11 +125,11 @@ const getEditGraph = (container, ctor = Graph) => {
             new Selection({
                 enabled: true,
                 content: null,
-                eventTypes: ["leftMouseDown", "mouseWheelDown"],
+                eventTypes: ['leftMouseDown', 'mouseWheelDown'],
                 movable: true,
                 multiple: true,
-                multipleSelectionModifiers: ["ctrl", "meta"],
-                pointerEvents: "auto",
+                multipleSelectionModifiers: ['ctrl', 'meta'],
+                pointerEvents: 'auto',
                 rubberband: true,
                 rubberNode: true,
                 rubberEdge: true, // not documented in v2.x docs but needed for rubberbanding TB curves
@@ -189,7 +189,7 @@ export const beforeAddCommand = (_event, args) => {
     // Showing and hiding the tools on mouseover events
     // gets added to the history stack.
     // Ignore those events since that is not a "user" action
-    return args.key !== "tools";
+    return args.key !== 'tools';
 };
 
 export default {
